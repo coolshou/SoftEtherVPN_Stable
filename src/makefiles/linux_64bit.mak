@@ -75,6 +75,7 @@ INSTALL_VPNSERVER_DIR=/usr/vpnserver/
 INSTALL_VPNBRIDGE_DIR=/usr/vpnbridge/
 INSTALL_VPNCLIENT_DIR=/usr/vpnclient/
 INSTALL_VPNCMD_DIR=/usr/vpncmd/
+INSTALL_SYSTEMD_DIR=/lib/systemd/system/
 
 ifeq ($(DEBUG),YES)
 	OPTIONS_COMPILE=$(OPTIONS_COMPILE_DEBUG)
@@ -432,6 +433,8 @@ $(INSTALL_BINDIR)vpnserver: bin/vpnserver/hamcore.se2 bin/vpnserver/vpnserver
 	@mkdir -p $(INSTALL_VPNSERVER_DIR)
 	cp bin/vpnserver/hamcore.se2 $(INSTALL_VPNSERVER_DIR)hamcore.se2
 	cp bin/vpnserver/vpnserver $(INSTALL_VPNSERVER_DIR)vpnserver
+	@mkdir -p $(INSTALL_SYSTEMD_DIR)
+	cp systemd/softether-vpnserver.service $(INSTALL_SYSTEMD_DIR)softether-vpnserver.service
 	echo "#!/bin/sh" > $(INSTALL_BINDIR)vpnserver
 	echo $(INSTALL_VPNSERVER_DIR)vpnserver '"$$@"' >> $(INSTALL_BINDIR)vpnserver
 	echo 'exit $$?' >> $(INSTALL_BINDIR)vpnserver
@@ -441,6 +444,8 @@ $(INSTALL_BINDIR)vpnbridge: bin/vpnbridge/hamcore.se2 bin/vpnbridge/vpnbridge
 	@mkdir -p $(INSTALL_VPNBRIDGE_DIR)
 	cp bin/vpnbridge/hamcore.se2 $(INSTALL_VPNBRIDGE_DIR)hamcore.se2
 	cp bin/vpnbridge/vpnbridge $(INSTALL_VPNBRIDGE_DIR)vpnbridge
+	@mkdir -p $(INSTALL_SYSTEMD_DIR)
+	cp systemd/softether-vpnbridge.service $(INSTALL_SYSTEMD_DIR)softether-vpnbridge.service
 	echo "#!/bin/sh" > $(INSTALL_BINDIR)vpnbridge
 	echo $(INSTALL_VPNBRIDGE_DIR)vpnbridge '"$$@"' >> $(INSTALL_BINDIR)vpnbridge
 	echo 'exit $$?' >> $(INSTALL_BINDIR)vpnbridge
@@ -450,6 +455,8 @@ $(INSTALL_BINDIR)vpnclient: bin/vpnclient/hamcore.se2 bin/vpnclient/vpnclient
 	@mkdir -p $(INSTALL_VPNCLIENT_DIR)
 	cp bin/vpnclient/hamcore.se2 $(INSTALL_VPNCLIENT_DIR)hamcore.se2
 	cp bin/vpnclient/vpnclient $(INSTALL_VPNCLIENT_DIR)vpnclient
+	@mkdir -p $(INSTALL_SYSTEMD_DIR)
+	cp systemd/softether-vpnclient.service $(INSTALL_SYSTEMD_DIR)softether-vpnclient.service
 	echo "#!/bin/sh" > $(INSTALL_BINDIR)vpnclient
 	echo $(INSTALL_VPNCLIENT_DIR)vpnclient '"$$@"' >> $(INSTALL_BINDIR)vpnclient
 	echo 'exit $$?' >> $(INSTALL_BINDIR)vpnclient

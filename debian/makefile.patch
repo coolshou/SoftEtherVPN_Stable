@@ -1,6 +1,6 @@
---- Makefile	2014-02-04 21:20:33.422762017 +0000
-+++ Makefile.old	2014-02-04 21:20:10.298761727 +0000
-@@ -32,11 +32,11 @@
+--- Makefile.old	2014-02-04 21:20:33.422762017 +0000
++++ Makefile	2014-02-04 21:20:10.298761727 +0000
+@@ -70,12 +70,12 @@
  
  OPTIONS_LINK_RELEASE=-O2 -fsigned-char -m64 -lm -ldl -lrt -lpthread -lssl -lcrypto -lreadline -lncurses -lz
  
@@ -9,11 +9,13 @@
 -INSTALL_VPNBRIDGE_DIR=/usr/vpnbridge/
 -INSTALL_VPNCLIENT_DIR=/usr/vpnclient/
 -INSTALL_VPNCMD_DIR=/usr/vpncmd/
+-INSTALL_SYSTEMD_DIR=/lib/systemd/system/
 +INSTALL_BINDIR=usr/bin/
 +INSTALL_VPNSERVER_DIR=usr/vpnserver/
 +INSTALL_VPNBRIDGE_DIR=usr/vpnbridge/
 +INSTALL_VPNCLIENT_DIR=usr/vpnclient/
 +INSTALL_VPNCMD_DIR=usr/vpncmd/
- 
++INSTALL_SYSTEMD_DIR=lib/systemd/system/
+
  ifeq ($(DEBUG),YES)
  	OPTIONS_COMPILE=$(OPTIONS_COMPILE_DEBUG)
