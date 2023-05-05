@@ -1,0 +1,143 @@
+﻿關於 SoftEther VPN 的重要聲明
+
+嵌入在本軟件的 VPN 通信功能比以往任何時候都要強大。這個強大的 VPN 能力將為您帶來巨大的好處。然而，如果你濫用此軟件， IT 可能會損害你自己。為了避免這樣的風險，本文檔為願意使用本軟件的客戶公佈了重要提示。下面的說明是非常重要的。仔細閱讀並理解它。
+
+
+1. VPN 通信協議
+1.1. SoftEther VPN 協議
+SoftEther VPN 可以進行 VPN 通信。不同於傳統的 VPN 協議， SoftEther VPN 有一個全新設計的 "SoftEther VPN 協議 (SE-VPN 協議)" 的實現。SE-VPN 協議將任何以太網數據包封裝進 HTTPS (HTTP over SSL) 連接。因此 SE-VPN 協議可以越過防火牆通信，即使防火牆被網絡管理員配置阻止傳統的 VPN 數據包。SE-VPN 協議的設計和實施以符合 TLS (RFC 5246) 和 HTTPS (RFC 2818)。然面，有時對 RFC 有不同的行為。如果你是一個網絡管理員，要在防火牆上阻止 SE-VPN 協議，你可以在防火牆上採取 "白名單" 策略，來過濾任何在邊界上的 TCP 或 UDP 數據包，除了明確允許到特定網站和服務器的數據包。
+
+1.2. NAT 穿透功能
+一般來說，如果你使用傳統的 VPN 系統，你必須要求網絡管理員把 NAT 或防火牆設置為 "打開" 或 "中繼" 特定的 TCP 或 UDP 端口。然而，也有需要以某種方式消除網絡管理員的這種工作成本。為了滿足這種需求， SoftEther VPN 有一個新實施的 "NAT 穿越" 功能。NAT 穿越默認情況下是啟用的。一個在 NAT 或防火牆後面、在電腦上運行的 SoftEther VPN 服務器可以接受來自互聯網的 VPN 連接，在防火牆或 NAT 上沒有任何特殊的配置。如果你想禁用 NAT 穿越功能，修改 SoftEther VPN 服務器上的配置文件 "DisableNatTraversal" 為 "true" 。為了在客戶端禁用它，在目標主機添加 "/ tcp" 後綴。
+
+1.3. 動態 DNS 功能
+傳統的 VPN 系統在 VPN 服務器上需要一個靜態全球 IP 地址。鑑於全球 IP 地址的短缺， SoftEther 公司在 SoftEther VPN 服務器上實施了 "動態 DNS 功能" 。動態 DNS 是默認啟用的。動態 DNS 功能通知計算機的當前全球 IP 地址到由 SoftEther 公司操作的動態 DNS 服務器。一個全球唯一主機名 (FQDN) ，如 "abc.softether.net" ( "ABC" 隨每個用戶唯一而不同) 將在 VPN 服務器上被指定。如果你告訴一個 VPN 用戶這個唯一的主機名，用戶可以在 VPN 客戶端上將其指定為目標 VPN 服務器的主機名，將能連接到 VPN 服務器。事先無需知道 IP 地址。如果 VPN 服務器的 IP 地址變化了，相關動態 DNS 服務的主機名註冊的 IP 地址會自動改變。通過這種機制，不再需要每月向 ISP 繳費的全球靜態 IP 地址。您可以使用帶動態 IP 地址的、消費者級、廉價的互聯網連接，來操作一個企業級的 VPN 系統。如果你想禁用動態 DNS ，把 SoftEther VPN 服務器配置文件中的 "DDnsClient" 指令的 "Disabled" 項目指定為 "true" 。* 中華人民共和國的居民請注意:如果你的 VPN 服務器運行在中華人民共和國， DNS 後綴將被替換為 "sedns.cn" 域名。 "sedns.cn" 域名服務由 "北京大遊索易科技有限公司" 擁有和運營的，它是一箇中國本地的企業。
+
+1.4. VPN over ICMP / VPN over DNS 功能
+如果你想在 SoftEther VPN 客戶端 / 網橋和 SoftEther VPN 服務器之間建立一個 VPN 連接，但如果 TCP 和 UDP 數據包被防火牆禁止通過，那麼你可以把有效載荷封裝進 "ICMP" (被稱為 Ping) 或 "DNS" 數據包。通過使用 ICMP 或 DNS ，即使防火牆或路由器阻止每個 TCP 或 UDP 連接，此功能可以實現 VPN 連接。VPN over ICMP/ VPN over DNS 功能儘可能的設計符合標準 ICMP 和 DNS 規範，但有時也不完全符合他們的行為。因此，一些劣質路由器可能會導致內存溢出或當有很多 ICMP 或 DNS 數據包通過時產生麻煩，這種路由器有時死機或重新啟動。它可能會影響在同一網絡上的其他用戶。為了避免這樣的風險，在 VPN 客戶端指定的目標主機名上附加後綴 "/tcp" ，禁用 VPN over ICMP / DNS 功能。
+
+1.5. VPN Azure 雲服務
+如果您的 SoftEther VPN 服務器放置在 NAT 或防火牆後面，由於某種原因，你不能使用 NAT 穿透功能、動態 DNS 功能或 VPN over ICMP/DNS 功能，您可以使用 VPN Azure Clouse 服務。 SoftEther 公司在互聯網上運行 VPN Azure 雲。VPN 服務器連接到 VPN Azure 雲，主機名 "abc.vpnazure.net" ( "abc" 是一個唯一的主機名) 通過 VPN Azure 雲可以被指定連接到 VPN 服務器。實際上，這樣的一個主機名指向一個由 SoftEther 公司所操作的雲服務器的全球 IP 地址。如果一個 VPN 客戶端連接到一個 VPN Azure 主機，那麼 VPN Azure 主機轉播在 VPN 客戶端和 VPN 服務器之間的所有流量。VPN Azure 在默認情況下是禁用的。您可以通過使用 VPN 服務器配置工具很容易地激活它。
+
+1.6. UDP 加速
+SoftEther VPN 具有 UDP 加速功能。如果一個 VPN 是由兩個站點組成檢測到 UDP 通道已建立， UDP 將自動使用。通過此功能， UDP 的吞吐量增加了。如果直接的 UDP 通道已被建立，直接的 UDP 數據包將被使用。但是，如果有一些障礙，如防火牆或 NAT ， "UDP 衝孔" 技術將被使用。 "UDP 衝孔" 使用 SoftEther 公司在互聯網上操作的雲服務器。UDP 加速通過在 VPN 客戶端一側進行設置在任何時候可以被禁用。
+
+
+2. VPN 軟件
+The notes in this section are not specific to SoftEther VPN or VPN Gate, but apply to general system software. SoftEther VPN Client, SoftEther VPN Server, SoftEther VPN Bridge, and VPN Gate Relay Service will be installed on your computer as system services. System services always run in the background. System services usually do not appear on the computer display. Then your computer system is booted, system services automatically start in the background even before you or other users log in. To check whether PacketiX-related system service is running, check the process list or the background service list of your OS (called as "Services" in Windows, or "Daemons" in UNIX.) You can activate, deactivate, start, or stop system services using the functions of the OS anytime. PacketiX-related GUI tools for managing system services communicate with these system services. After you terminate these management GUI tools, PacketiX-related system services will continue to run in the background. System services consume CPU time, computer power, memory and disk space. Because system services consume power, your electricity charges and amount of thermal of your computer increase as result. In addition, there is a possibility that the mechanical parts of the life of your computer is reduced.
+
+2.1. SoftEther VPN 客戶端
+如果您在 Windows 上使用 SoftEther VPN 客戶端，虛擬網絡適配器設備驅動程序將安裝在 Windows 上。虛擬網絡適配器作為一個內核模式驅動程序實施在 Windows 上。驅動程序是數字簽名的，由 VeriSign ， Inc 所簽發的證書，還由 Symantec Corporation (賽門鐵克公司) 簽署。問你要確保安裝驅動程序的一條消息可能會彈出在屏幕上。如果可能的話， SoftEther VPN 客戶端可能會響應消息。SoftEther VPN 客戶端還優化了在 Windows 上 MMCSS (多媒體類計劃程序服務) 的配置。您以後可以撤消 MMCSS 的優化。
+
+2.2. SoftEther VPN 服務器 / 網橋
+如果您使用 SoftEther VPN 服務器 / 網橋在 Windows 上的 "本地網橋" 功能，你必須在電腦上安裝低級別的以太網數據包處理驅動程序。驅動程序是數字簽名的，由 VeriSign ， Inc 所簽發的證書，還由 Symantec Corporation (賽門鐵克公司) 簽署。SoftEther VPN 服務器 / 網橋在物理網絡適配器本地網橋功能中可以禁用 TCP / IP 卸載特性。在 Windows Vista /2008 或更高版本， VPN 服務器可以注入一個符合 Windows 過濾平臺 (WPF) 規範的數據包過濾驅動程序至內核以提供 IPsec 功能。數據包過濾驅動程序將被加載僅當啟用 IPsec 功能時。一旦您啟用 SoftEther VPN 服務器的 IPsec 功能， Windows 內置的 IPsec 功能將被禁用。在您禁用了 SoftEther VPN 服務器的 IPsec 功能之後，那麼 Windows 內置的 IPsec 功能將復甦。為了提供本地橋功能， SoftEther VPN 服務器 / 網橋在操作系統上禁用 TCP / IP 卸載功能。
+
+2.3. 用戶模式安裝
+您可以在 Windows 以 "用戶模式" 安裝 SoftEther VPN 服務器和 SoftEther VPN 網橋。換句話說，即使你沒有 Windows 系統管理員的權限，你可以作為一個普通用戶安裝 SoftEther VPN。用戶模式安裝將禁用一些功能，但其他大部分功能都能正常工作。因此，例如，僱員可以在辦公室網絡中的計算機上安裝 SoftEther VPN 服務器端，他將能夠從他家連接到服務器。為了由用戶自己實現這樣的系統，在技術觀點上無須系統管理員權限。然而，違反公司規定未經授權在計算機上安裝軟件可能會被視為不受歡迎的行為。如果你是一名僱員屬於該公司，該公司的政策禁止安裝軟件或未經允許進行互聯網通信，你必須事先從網絡管理員或您公司的總裁獲得許可，再安裝 SoftEther VPN。如果您以用戶模式安裝 VPN 服務器 / 網橋，圖標將出現在 Windows 任務托盤。如果您覺得該圖標妨礙你了，你可以操作將其隱藏。然而，你不能利用此隱藏功能在其他人的電腦上安裝 VPN 服務器作為間諜軟件。這種行為可能是違反刑法的犯罪。
+
+2.4. 保持活躍功能
+默認情況下， SoftEther VPN 服務器和 SoftEther VPN 網橋有保持活躍的功能。此功能的目的是為了維持互連網線路的活躍。該功能定期發送帶有隨機 - 字節 - 數組 - 有效載荷的 UDP 數據包。此功能為避免移動或撥號連接的自動斷開是非常有用的。您可以隨時禁用保持活躍功能。
+
+2.5. 卸載
+SoftEther VPN 軟件的卸載過程將刪除所有程序文件。然而，非程序文件 (如程序運行所產生的文件和數據) 將不會被刪除。由於技術原因，卸載程序的 exe 和資源文件可能仍然存在。這些剩餘的文件決不會影響使用計算機，但是你可以手動刪除它。內核模式驅動程序可能不會被刪除，但是這樣的驅動程序在 Windows 下次啟動時不會被加載。您可以使用 Windows 的 "sc" 命令手動刪除內核模式驅動程序。
+
+2.6. 安全
+你應該在安裝後在 SoftEther VPN 服務器 / 網橋設置管理員的密碼。如果你沒有做到這一點，其他人未經您許可可以訪問 SoftEther VPN 服務器 / 網橋，並可以設置密碼。這個警告可能也適用於 Linux 版本的 SoftEther VPN 客戶端。
+
+2.7. 自動更新通知
+Windows 版的 SoftEther VPN 軟件有自動更新通知功能。它定期訪問 SoftEther 更新服務器檢查是否發佈了最新版本的軟件。如果最新版已發佈，通知消息將在屏幕上彈出。為了達到這個目的，版本、語言設置、您的計算機的 IP 地址、唯一標識符、連接到 VPN 服務器的主機名將被髮送到 SoftEther 的更新服務器。任何個人信息將不被髮送。默認情況下自動更新通知是啟用的，然而你可以在配置屏幕上禁用它。通過 VPN 服務器管理器，設置是否打開或關閉將被單獨保存對應每個目標 VPN 服務器。
+
+2.8. 虛擬 NAT 功能
+虛擬 HUB 在 SoftEther VPN 服務器 / 網橋上有 "虛擬 NAT 功能" 。虛擬 NAT 功能可以通過 VPN 客戶端的多個私有 IP 地址共享同一個物理網絡上的單一 IP 地址。有兩種虛擬 NAT 的操作模式:用戶模式和內核模式。在用戶模式下運行，虛擬 NAT 共享主操作系統上分配的一個 IP 地址。不同於用戶模式，內核模式的操作試圖找到物理網絡上的 DHCP 服務器。如果有兩個或以上的物理網絡，每個網段上的 DHCP 服務器會被自動連續尋找。如果發現 DHCP 服務器，並獲取一個 IP 地址， IP 地址將被虛擬 NAT 使用。在這種情況下，作為 DHCP 客戶端的 IP 條目將被登記在物理 DHCP 服務器的 IP 池。為了在互連網中和主機進行通信，物理默認網關和 DNS 服務器將被虛擬 NAT 使用。在內核模式的操作中，虛擬 HUB 上有一個運行在物理以太網段上的虛擬 MAC 地址。
+為了檢查到互聯網的連通性， SoftEther VPN 定期發送 DNS 查詢數據包，以解析 "www.yahoo.com" 或 "www.baidu.com" 主機的 IP 地址，並嘗試連接到這樣結果 IP 地址的 TCP 80 端口，進行連通性檢查。
+
+2.9. 內核模式組件的無人值守安裝
+當 SoftEther VPN 檢測到需要在 Windows 安裝內核模式組件， Windows 系統將出現一條確認消息。在此之際， SoftEther VPN 軟件將切換到無人值守的安裝模式，以回應 "是" 到 Windows。當從遙遠地點進行遠程管理時，這個解決方案可以防止鎖死。
+
+2.10. Windows 防火牆
+SoftEther VPN 軟件將其自身註冊為一個安全程序。這樣的條目在卸載後仍被保留。您可以從 Windows 的控制面板中手動刪除它。
+
+
+3. 互連網服務
+3.1. SoftEther 公司提供的互連網服務
+SoftEther 公司在互聯網上提供了動態 DNS、NAT 穿透、和 VPN Azure 服務器服務。這些服務都是免費的。客戶通過使用 SoftEther VPN 軟件，經由互聯網訪問這些服務。這些服務計劃將在以後發佈的 "SoftEther VPN" 的開源版本中也提供。
+
+3.2. 發送的信息和隱私保護
+為了使用上述服務， SoftEther VPN 軟件可以從客戶的計算機到由 SoftEther 公司操作的雲服務發送 IP 地址、主機名、VPN 軟件的版本。這些信息的發送是要使用這些服務的最少必須內容。無任何個人信息將被髮送。 SoftEther 公司記錄接收到的最少信息在雲服務服務器的日誌文件為 90 天。這些日誌將被用於故障排除和其他合法活動。SoftEther 公司可以提供日誌給屬於法院、警察局和檢察院的日本政府的公務人員，以遵守當局的命令。(每一個日本公務人員有責任根據法律密切保存這些信息。) 此外， IP 地址或其他信息將進行統計處理，並提供給公眾，而不是暴露每一個具體的 IP 地址，以進行研究活動的發佈。
+
+3.3. 通過 VPN Azure 服務的通信數據
+不管以上 3.2 的規則，如果客戶使用 VPN Azure 雲服務的發送或接收 VPN 數據包，實際的有效載荷將在很短的時間通過服務器的易失性存儲器存儲和轉發。這樣的行為自然需要提供 "VPN 中繼服務" 。無有效載荷將被記錄在 "固定的" 儲存設備，如硬盤驅動器。然而， "竊聽罪犯程序法" (日本在 1999 年 8 月 18 日裁決的第 137 個立法) 要求電信公司允許日本政府當局進行在線竊聽。物理放置在日本的 VPN Azure 服務器也是服從於這個法律。
+
+3.4. 符合日本電信法
+SoftEther 公司符合日本電信法必要時通過互聯網提供在線服務。
+
+3.5. 免費和學術實驗服務
+SoftEther 作為學術實驗服務提供動態 DNS、NAT 穿透和 VPN Azure。因此，服務可以被用於免費。這些服務不是 "SoftEther VPN 軟件產品" 的一部分。這些服務不提供任何保證。這些服務由於技術或操作問題可能會被暫停或終止。在這種情況下，用戶將無法使用這些服務。用戶必須瞭解這些風險，並承認由用戶自行承擔這樣的風險。SoftEther 永遠不會對結果、或使用的損害、或服務無法使用承擔任何責任。即使用戶已經支付 SoftEther VPN 商業版的許可費用，因為支付的費用不包含這些服務的任何費用。因此，如果在線服務將停止或終止， SoftEther 公司將不提供任何退款或損害的補償。
+
+3.6. DNS 代理雲服務器
+在某些地區，當用戶使用互連網，通過 ISP 線路時，一個 DNS 查詢有時損壞或丟失。如果 SoftEther VPN 的服務器、客戶端或網橋檢測到訪問實際的 VPN 服務器可能不穩定的可能性，那麼 DNS 查詢將被轉移到由 SoftEther 公司運行的 DNS 代理雲服務器。DNS 代理雲服務器將回答糾正一個 IP 地址響應 DNS 查詢。
+
+
+4. 一般注意事項
+4.1. 需要網絡管理員的批准
+SoftEther VPN 具有強大的功能，不需要網絡管理員的特殊設置。例如，您不必要求管理員配置現有的防火牆以 "打開" TCP / UDP 端口。這些性能特點是為了以下目的:消除網絡管理員的工作時間和成本，並避免誤配置風險，如在防火牆上打開特定的異常端口的任務。然而，在安裝 SoftEther VPN 前，屬於公司的任何員工必須獲得網絡管理員的批准。如果您的網絡管理員忽略提供這樣的批准，你可以考慮獲得上級領導的批准。(例如，該公司總裁。) 如果您沒有獲得公司領導的批准使用 SoftEther VPN ，你可能有不利的條件。SoftEther 公司將不會對使用 SoftEther VPN 的結果或損害承擔責任。
+
+4.2. 遵守貴國的法律
+如果您所在國家的法律禁止加密的使用，你自己必須禁用 SoftEther VPN 的加密功能。同樣，在一些國家或地區， SoftEther VPN 的某些功能可能會被法律禁止使用。其他國家的法律與 SoftEther 公司無關，因為 SoftEther 公司是一個在物理上位於並註冊於日本的企業。例如，可能存在一種風險，即 SoftEther VPN 的一部分與只在某些特定區域有效的現有專利衝突。SoftEther 公司沒有在日本固有領土之外這些特定區域的利益。因此，如果你想在日本以外的地區使用 SoftEther VPN ，你必須要小心不要侵犯第三人的權利。在您在這樣的地區實際使用之前，您必須驗證在這些特定區域使用 SoftEther VPN 的合法性。本來，在世界上有近 200 個國家，每個國家的法律都是不同的。這幾乎是不可能的事先驗證每一個國家的法律和法規，使軟件符合所有國家的法律，再發布軟件。因此 SoftEther 公司已核實 SoftEther VPN 僅對日本法律和法規的合法性。如果用戶在一個特定的國家使用 SoftEther VPN ， SoftEther 公司將不會賠償政府當局的損害，也不會承擔恢復或賠償此類損害或刑事法律責任。
+
+
+5. VPN Gate 學術實驗項目
+(本章僅適用於 SoftEther VPN 軟件包，其中包含 VPN Gate 學術實驗項目的擴展插件。)
+5.1. 關於 VPN Gate 學術實驗項目
+VPN Gate 學術實驗項目是一個在線服務，由日本筑波大學研究生院為學術研究目的運營。本研究的目的是要擴大我們對 "全球分佈式公共 VPN 中繼服務器" 技術 (Global Distributed Public VPN Relay Server, GDPVRS) 的認識。有關詳細信息，請訪問 http://www.vpngate.net/。
+
+5.2. 關於 VPN Gate 服務
+SoftEther VPN 服務器和 SoftEther VPN 客戶端可能含有 "VPN Gate 服務" 程序。然而， VPN Gate 服務在默認情況下是禁用的。
+VPN Gate 服務通過安裝了 SoftEther VPN 服務器或 SoftEther VPN 客戶端的計算機所有者的志願目的被激活並啟用。在您激活 VPN Gate 服務以後，計算機將作為全球分佈式公共 VPN 中繼服務器的一部分開始服務。計算機的 IP 地址、主機名和相關信息將被髮送並在 VPN Gate 學術實驗項目的服務器目錄註冊，這些信息將被公佈，並向公眾披露。這一機制將允許任何 VPN Gate 客戶端軟件的用戶連接到您計算機上運行的 VPN Gate 服務。當在 VPN Gate 客戶端和你的 VPN Gate 服務之間建立一個 VPN 會話， VPN Gate 客戶端的用戶可以發送 / 接收向互聯網經由 VPN Gate 服務的任何 IP 數據包。VPN Gate 服務的主機的全球 IP 地址將作為 VPN Gate 客戶端啟動的這種通信的源 IP 地址被使用。
+VPN Gate 服務將發送一些信息至 VPN Gate 學術實驗服務目錄服務器。這些信息包括第 5.5 節中描述的運營商的信息、日誌設置、正常運行時間、操作系統版本、協議類型、端口號、質量信息、統計信息、VPN Gate 客戶端的日誌歷史數據 (包括日期，IP 地址，版本號和 ID) 、VPN Gate 通信的目標 HTTP/HTTPS 主機名或 IP 地址和端口號的日誌記錄和軟件的版本。此信息可能會在目錄中披露。VPN Gate 服務從目錄服務器接收到一個密鑰以進行在 5.9 章中描述的編碼。
+
+5.3. VPN Gate 服務行為的詳細信息
+如果您手動啟用 VPN Gate 服務，在默認情況下是禁用的， "VPNGATE" 虛擬 Hub 將在 SoftEther VPN 服務器上被創建。如果您使用的是 SoftEther VPN 客戶端，並嘗試激活 VPN Gate 服務，相當於 SoftEther VPN 服務器的程序在 SoftEther VPN 客戶端的同一進程將被調用，虛擬 HUB "VPNGATE" 將被創建。虛擬 HUB "VPNGATE" 包含一個默認情況下名為 "VPN" 的用戶，此用戶允許在互聯網上的任何人建立 VPN 連接到虛擬 HUB。一旦 VPN 客戶端連接到虛擬 HUB "VPNGATE" ，用戶與互聯網之間的任何通信將穿過虛擬 Hub ，使用運行有 SoftEther VPN 服務器 (或 SoftEther VPN 客戶端) 的計算機上的物理網絡接口發送 / 接收。這將導致以下結果，目標主機通過 VPN 客戶端確定通信的源發起是從 VPN Gate 服務的主機的 IP 地址指定的。不過，為了安全，目的地是在 192.168.0.0/255.255.0.0 ， 172.16.0.0/255.240.0.0 或 10.0.0.0/255.0.0.0 以內的任何數據包將被虛擬 HUB "VPNGATE" 攔截，以保護您的本地網絡。Any packets which destinations are within 169.254.0.0/16, 224.0.0.0/4 or 100.64.0.0/10 will also be blocked for just in case. These packet filters except DNS, ICMP and ARP packets. 因此，如果在您的企業網絡或私人網絡運行 VPN Gate 服務，這是安全的，因為匿名 VPN 客戶端用戶將不被允許訪問這些私人網絡。VPN Gate 服務也可作為中繼訪問 VPN Gate 目錄服務器。
+為了使 VPN Gate 服務熟悉防火牆和 NAT ，通過使用 1.2 章描述的 NAT 穿透功能打開一個 UDP 端口。還打開了一些 TCP 端口並監聽，一些 TCP 和 UDP 端口將被指定為本地路由器要求的通用即插即用 (UPnP) 傳輸條目的目標端口。UPnP 請求數據包將被定期發送。有些路由器在設備上永久保持一個開放的 TCP/UDP 端口。如果你想關閉他們，可以手動關閉。
+VPN Gate 服務還提供了鏡像網站功能 www.vpngate.net。這是一種機制，將的最新內容 www.vpngate.net 的副本被託管的鏡像站點微小的 HTTP 服務器上運行的 VPN Gate 服務程序。它都將自己註冊上鏡的站點列表中 www.vpngate.net。然而，它從來不向 www.vpngate.net 任何其他通訊中繼。
+
+5.4. 互聯網之間經由 VPN Gate 服務的通信
+VPN Gate 服務提供了一個用戶與互聯網之間的路由，通過使用 2.8 章虛擬 NAT 功能。VPN Gate 服務發送 Ping 查詢數據包到位於筑波大學的服務器，和被確定為 8.8.8.8 的谷歌公共 DNS 服務器，以檢查您的互聯網線路的最新質量。VPN Gate 服務還發送和接收大量的隨機數據包到 / 從筑波大學的速度測試服務器上。這些高質量的數據將自動地、定期地被報告給 VPN Gate 目錄服務器。結果將被保存並向公眾披露。這些定期的查詢通信被調整，儘量不佔用互聯網線路，但在某些情況下可能會佔用線路。
+
+5.5. VPN Gate 服務的運營商信息
+如果您激活您計算機上的 VPN Gate 服務，此計算機將成為全球分佈式公共 VPN 中繼服務器的一部分。因此，您的 VPN Gate 服務的運營商管理信息應被報告和註冊到 VPN Gate 服務目錄裡。運營商的信息包含了運營商的名稱、濫用報告、聯繫的 e-mail 地址。這些信息可以被輸入到屏幕上的 VPN Gate 配置裡。輸入的信息將被髮送到 VPN Gate 目錄服務器，保存並向公眾披露。所以，你必須要小心地輸入信息。順便說一下，直到你指定某名稱作為運營商的信息，計算機的主機名會被自動使用作為運營商名稱的字段，通過在主機名後附加 "'s owner" 字符串。
+
+5.6. 遵守法律運營 VPN Gate 服務
+在某些國家或地區，正打算激活和運行 VPN Gate 服務的用戶，他被強制要求從 / 到政府獲得許可或註冊服務。如果您所在的地區有這樣的規定，你必須在激活 VPN Gate 服務之前，提前完成強制流程。無論是 VPN Gate 學術實驗項目的開發者和運營商對於發生的未能遵守當地法律的法律 / 刑事責任或損害都不承擔任何責任。
+
+5.7. 保護通信的隱私
+大多數國家有一個法律要求通信服務的運營商，包括 VPN Gate 服務運營商，以保障第三方的通信隱私。當您運營 VPN Gate 服務時，你必須始終保護用戶的隱私。
+
+5.8. 數據包日誌
+數據包日誌功能在 VPN Gate 服務上實施。它記錄通過虛擬 HUB 傳輸的主要 TCP/IP 數據包的基本包頭。此功能將有助於瞭解連接您的 VPN Gate 服務用戶的通信發起者的 "原始 IP 地址" ，通過檢查數據包日誌和連接日誌。數據包日誌記錄的僅為合法調查的目的。不會偷看，也不會洩漏數據包日誌，除非正當的目的。這種行為將違反 5.7 章。
+
+5.9. 數據包日誌的自動存檔和編碼功能
+VPN Gate 學術實驗服務是根據日本憲法和法律運營和運行的。日本憲法法律要求嚴格保護通信的隱私權。由於這項服務是根據日本的規則， VPN Gate 服務的程序實現了此 "自動日誌文件編碼" 的保護機制，並默認啟用。
+默認情況下， VPN Gate 服務當前自動配置編碼已經過去了兩週或以上的數據包日誌文件。為了保護通信隱私，如果一個數據包日誌文件一旦被編碼，即使是本地計算機管理員也無法檢查數據包日誌文件。這種機制保護 VPN Gate 服務最終用戶的隱私。
+您可以更改 VPN Gate 服務的設置，禁用此項自動編碼功能。然後數據包日誌文件將永遠不會被編碼，即使兩個星期已過去。在這樣的配置中，所有數據包日誌將以純文本形式保留在磁盤上。因此，你必須要注意不要侵犯用戶的隱私。
+如果你負責解碼已編碼的數據包日誌文件 (例如:一個 VPN Gate 服務的用戶非法濫用你的 VPN Gate 服務，你必須解碼數據包日誌以符合法律) ，請聯繫日本筑波大學研究生院 VPN Gate 學術實驗服務的管理員。你可以從 http://www.vpngate.net/ 找到聯繫地址。根據法律如果有從法院或其他司法當局適當的和法律的要求， VPN Gate 服務的管理員將響應解碼數據包日誌。
+根據技術或管理原因，可能會禁用 "數據包日誌自動存檔和編碼" 功能。
+
+5.10. 在日本領土操作 VPN Gate 服務的注意事項
+當一個用戶在日本領土操作 VPN Gate 服務時，這種行為會根據日本電信法加以規範，操作受法律管轄。然而，在這樣的情況下，根據 "日本電信業務競爭手冊 [補充版本]" ，非營利性的通信業務不被認為是 "電信業務" 。因此，通常 VPN Gate 服務的運營商不受制於 "電信業務經營者" ，不強制要求到政府註冊。
+
+5.11. VPN Gate 客戶端
+如果 SoftEther VPN 客戶端包含 VPN Gate 客戶端插件，你可以在互聯網上用它來獲得當前操作的 VPN Gate 服務的服務器列表，使一個 VPN 連接到列表上的特定服務器。
+VPN Gate 客戶端始終定期保持 VPN Gate 服務的最新列表。要小心，如果你使用的是按使用量付費的互聯網線路。
+當您啟動 VPN Gate 客戶端軟件，要求你激活或不是 VPN Gate 服務的屏幕將出現。VPN Gate 服務的詳細信息，請閱讀上述各節。
+
+5.12. 在加入或使用 VPN Gate 學術實驗項目之前的注意事項
+VPN Gate 學術實驗服務是作為日本筑波大學研究生院的一個研究項目運營的。該服務受日本法律管理。其他國家的法律不受我們關注也不承擔責任。
+從本質上講，在世界上有近 200 個國家，都有不同的法律。不可能在軟件發佈前去驗證每一個國家的法律和法規，並使我們的軟件符合所有國家的法律。如果用戶在一個特定的國家使用 VPN Gate 服務，損壞公務人員的權力，服務或軟件的開發者將永遠不會負責恢復或補償等損害或刑事責任。
+通過使用本軟件和服務，用戶有自己的義務必須遵守所有相關的法律和規則。用戶將完全承擔任何損失和使用本軟件及服務導致的責任，無論日本領土以內還是以外。
+如果你不同意也不理解上述警告，不要使用任何 VPN Gate 學術實驗服務功能。
+VPN Gate 僅僅是學術目的的一個研究項目。VPN Gate 是作為 SoftEtherVPN 和 UT-VPN 的一個插件被開發的。然而， VPN Gate 的每一部分都是在筑波大學的這一研究項目被開發的。VPN Gate 的任何部分都不是 SoftEther 公司開發的。VPN Gate 研究項目不是由 SoftEther 公司引導、經營，推廣和保證的。
+
+5.13. VPN Gate 客戶端的 P2P 中繼功能可加強針對防火牆管控的規避能力
+P2P 中繼功能是為了加強規避防火牆管控的能力。如果 P2P 中繼功能在您的 VPN Gate 客戶端被啟用，那麼 P2P 中繼功能將接受來自 VPN Gate 用戶的 VPN 連接，提供中繼功能給外部遠程 VPN Gate 的服務器，這是由第三方在免費的互聯網環境下託管的。此 P2P 中繼功能從來不提供共享 NAT 功能，也不更換 VPN Gate 用戶的傳出 IP 地址為你的 IP 地址，因為這個 P2P 中繼功能只提供 "反射服務" (髮夾中繼) ，從進入的 VPN Gate 用戶中繼到一個外部的 VPN Gate 服務器。在這種情況下，經由您的 P2P 中繼功能的 VPN 隧道將終止於外部的 VPN Gate 服務器，而不是你的 VPN Gate 客戶端。然而， VPN Gate 服務器作為最終目的地將記錄您的 IP 地址作為通過您的 P2P 中繼功能發起的 VPN 隧道的源 IP 地址。此外，經由你的 P2P 中繼功能傳輸的用戶數據包將被記錄在您的計算機的數據包日誌上，如 5.8 章所述。當您安裝了 VPN Gate 客戶端之後，如果將 P2P 中繼功能設置為自動啟用，那麼在 5.2，5.3，5.4，5.5，5.6，5.7，5.8，5.9，5.10，5.11 和 5.12 章節中的所有事項將被應用於你的電腦，與您啟用 VPN Gate 服務 (VPN Gate 服務器功能) 時的情況相同。如果你的 P2P 功能被啟用，那麼在第 5.5 章節中描述的您的計算機 IP 地址和默認運營商名字將被列在由 VPN Gate 項目提供的 VPN Gate 服務器列表上。您可以通過手動編輯 "vpn_gate_relay.config" 文件更改這些字符串。需要注意的是，在編輯之前您需要停止 VPN 客戶端服務。如果 VPN Gate 客戶端檢測到您的計算機位於存在審查制度的防火牆區域， VPN 客戶端會自動啟用您的計算機上的 P2P 中繼功能。如果您希望禁用 P2P 中繼功能，您必須在 VPN 客戶端的配置文件 "vpn_client.config" 上設置 "DisableRelayServer" 標誌為 "true" 。需要注意的是，編輯它之前您需要停止 VPN 客戶端服務。即使您的國家或地區有法律限制運行 P2P 中繼功能， VPN Gate 客戶端仍會激活 P2P 中繼功能。如果您身處於存在這些法律限制的區域，請您遵守相關法律法規，通過設置 "DisableRelayServer" 標誌手動禁用 VPN Gate 客戶端的 P2P 中繼功能。
+
